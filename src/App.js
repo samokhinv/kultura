@@ -13,7 +13,7 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			activePanel: 'event_1',
+			activePanel: 'home',
 			fetchedUser: null,
 			events: [
 				{
@@ -83,13 +83,19 @@ class App extends React.Component {
 		this.setState({ activePanel: e.currentTarget.dataset.to })
 	};
 
+	getScreens = () => {
+		return [
+			<Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
+			...this.state.events.map((e, i) => (
+				<Event key={e.id} id={`event_${e.id}`} event={e}></Event>
+			)),
+		]
+	}
+
 	render() {
 		const res = (
 			<View activePanel={this.state.activePanel}>
-				{ this.state.events.map((e, i) => (
-					<Event key={e.id} id={`event_${e.id}`} event={e}></Event>
-				))}
-				{/* <Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} /> */}
+				{ this.getScreens() }
 			</View>
 		);
 
