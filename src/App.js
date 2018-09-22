@@ -3,6 +3,7 @@ import connect from '@vkontakte/vkui-connect';
 import { View } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import './app.css';
 
 import Home from './panels/Home';
 import Persik from './panels/Persik';
