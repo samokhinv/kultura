@@ -6,7 +6,7 @@ import './index.css';
 
 const EventsListItem = props => (
   <Cell>
-    <Div className="containter event-list-item">
+    <Div onClick={(e) => props.go(e)} data-to={`event_${props.event.id}`}  className="containter event-list-item">
       <div className="row">
         <div className="col col-4">
           <div className="event-list-item__image"></div>

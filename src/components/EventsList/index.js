@@ -9,7 +9,7 @@ const EventsList = props => (
   <Group className="events-list" title="Ближайшие мероприятия">
     <List>
       { props.events.map((e) => (
-        <EventsListItem event={e} />
+        <EventsListItem event={e} go={props.go} />
       )) }
     </List>
   </Group>
@@ -21,7 +21,8 @@ EventsList.propTypes = {
     type: PropTypes.string,
     date: PropTypes.any,
     subject: PropTypes.any,
-  }))
+  })),
+  go: PropTypes.func,
 };
 
 export default EventsList;

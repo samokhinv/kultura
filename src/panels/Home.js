@@ -18,7 +18,7 @@ const Home = props => (
 				{`${props.fetchedUser.first_name} ${props.fetchedUser.last_name}`}
 			</ListItem>
 		</Group>}
-		<EventsList events={props.events} ></EventsList>
+		<EventsList events={props.events} go={props.go} ></EventsList>
 	</Panel>
 );
 

@@ -6,14 +6,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './app.css';
 
 import Home from './panels/Home';
-import Persik from './panels/Persik';
+import Event from './panels/Event';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			activePanel: 'home',
+			activePanel: 'event_1',
 			fetchedUser: null,
 			events: [
 				{
@@ -21,6 +21,7 @@ class App extends React.Component {
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
+					id: 1,
 				},
 
 				{
@@ -28,6 +29,7 @@ class App extends React.Component {
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
+					id: 2,
 				},
 
 				{
@@ -35,19 +37,14 @@ class App extends React.Component {
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
+					id: 3,
 				},
 				{
 					type: 'Музей',
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
-				},
-
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
+					id: 4,
 				},
 
 				{
@@ -55,12 +52,7 @@ class App extends React.Component {
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
-				},
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
+					id: 5,
 				},
 
 				{
@@ -68,33 +60,7 @@ class App extends React.Component {
 					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
 					subject: 'Пушкинский музей',
 					date: Date.now(),
-				},
-
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
-				},
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
-				},
-
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
-				},
-
-				{
-					type: 'Музей',
-					title: 'ШЕДЕВРЫ ЖИВОПИСИ И ГРАВЮРЫ ЭПОХИ ЭДО',
-					subject: 'Пушкинский музей',
-					date: Date.now(),
+					id: 6,
 				},
 			],
 		};
@@ -118,12 +84,16 @@ class App extends React.Component {
 	};
 
 	render() {
-		return (
+		const res = (
 			<View activePanel={this.state.activePanel}>
-				<Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />
-				<Persik id="persik" go={this.go} />
+				{ this.state.events.map((e, i) => (
+					<Event key={e.id} id={`event_${e.id}`} event={e}></Event>
+				))}
+				{/* <Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} /> */}
 			</View>
 		);
+
+		return res;
 	}
 }
 
