@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel, CellButton, InfoRow, ListItem, List, Cell, Button, Group, Div, Avatar, PanelHeader } from '@vkontakte/vkui';
 import Icon24Privacy from '@vkontakte/icons/dist/24/privacy';
-import * as icons from '@vkontakte/icons';
-
 
 import './index.css';
-console.log(icons);
 
 export default class Event extends React.Component {
   constructor(props) {

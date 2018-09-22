@@ -67,6 +67,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log("FUCKED")
 		connect.subscribe((e) => {
 			switch (e.detail.type) {
 				case 'VKWebAppGetUserInfoResult':
@@ -80,6 +81,7 @@ class App extends React.Component {
 	}
 
 	go = (e) => {
+		console.log( e.currentTarget.dataset.to);
 		this.setState({ activePanel: e.currentTarget.dataset.to })
 	};
 
