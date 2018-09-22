@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Panel, CellButton, InfoRow, ListItem, List, Cell, Button, Group, Div, Avatar, PanelHeader } from '@vkontakte/vkui';
 
 import Icon24Recent from '@vkontakte/icons/dist/24/recent';
-import Icon28Place from '@vkontakte/icons/dist/28/place';
+import Icon24Place from '@vkontakte/icons/dist/24/place';
 import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
 import Icon24Linked from '@vkontakte/icons/dist/24/linked';
 import Icon24MoneyCircle from '@vkontakte/icons/dist/24/money_circle';
@@ -19,7 +19,7 @@ export default class Event extends React.Component {
   }
   render() {
     return (<Panel className="event-detail" id={this.props.id}>
-		<AppHeader></AppHeader>
+		<AppHeader showBack id={this.props.id} go={this.props.go}></AppHeader>
     <div className="event-detail__image-container">
       <span className="event-detail__organizer-logo"></span>
       <span className="event-detail__title">{this.props.event.title}</span>
@@ -40,7 +40,7 @@ export default class Event extends React.Component {
             Бесплатно
           </InfoRow>
         </Cell>
-        <Cell before={<Icon28Place />}>
+        <Cell before={<Icon24Place />}>
           <InfoRow title="Организатор">
           <a href="http://vk.com">Пушкинский музей</a>
           </InfoRow>

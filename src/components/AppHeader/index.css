@@ -1,0 +1,7 @@
+.app-header .PanelHeader {
+  padding-top: 0;
+}
+
+.View .PanelHeader {
+  padding: 0;
+}

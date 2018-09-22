@@ -10,7 +10,7 @@ console.log(AppHeader);
 
 const Home = props => (
 	<Panel id={props.id}>
-		<AppHeader></AppHeader>
+		<AppHeader id={props.id} go={props.go}></AppHeader>
 		<CategoriesGallery></CategoriesGallery>
 		{props.fetchedUser &&
 		<Group title="User Data Fetched with VK Connect">
