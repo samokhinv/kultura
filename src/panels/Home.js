@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Panel, ListItem, List, Cell, Button, Group, Div, Avatar, PanelHeader } from '@vkontakte/vkui';
 
 import EventsList from '../components/EventsList';
+import CategoriesGallery from '../components/CategoriesGallery';
 
 const Home = props => (
 	<Panel id={props.id}>
 		<PanelHeader>Культурный рофлан</PanelHeader>
+		<CategoriesGallery></CategoriesGallery>
 		{props.fetchedUser &&
 		<Group title="User Data Fetched with VK Connect">
 			<ListItem
