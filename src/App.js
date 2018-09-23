@@ -83,7 +83,8 @@ class App extends React.Component {
 
 const WithEvents = (Component) => (props) => <div><FirestoreCollection
 path="list_of_events"
-sort=""
+sort="time:asc"
+limit={5}
 render={({ isLoading: isLoadingEvents, data: events }) => (
 	<FirestoreCollection
 		path="events"
