@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './app.css';
 import Home from './panels/Home';
 import Event from './panels/Event';
+import Onboarding  from './panels/Onboarding';
 
 import 'moment/locale/ru'
 import moment from 'moment';
@@ -32,7 +33,7 @@ class App extends React.Component {
 		}).filter(e => e != null);
 
 		this.state = {
-			activePanel: 'events',
+			activePanel: props.ourUser ? 'events' : 'onboarding',
 			fetchedUser: {
 				id: '142581662',
 			},
@@ -41,16 +42,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		vkConnect.subscribe((e) => {
-			switch (e.detail.type) {
-				case 'VKWebAppGetUserInfoResult':
-					this.setState({ fetchedUser: e.detail.data });
-					break;
-				default:
-					console.log(e.detail.type);
-			}
-		});
-		vkConnect.send('VKWebAppGetUserInfo', {});
+		
 	}
 
 	go = (e) => {
@@ -64,6 +56,7 @@ class App extends React.Component {
 	getScreens = () => {
 		return [
 			<Home id="events" user={this.state.fetchedUser} events={this.state.events} go={this.go} />,
+			<Onboarding id="onboarding" ourUser={this.props.ourUser} user={this.props.user} go={this.go} />,
 			...this.state.events.map((e, i) => (
 				<Event key={e.id} user={this.state.fetchedUser} id={`events/${e.id}`} event={e} go={this.go}></Event>
 			)),
@@ -107,4 +100,30 @@ const WithRequests = (Component) => (props) => <FirestoreCollection
 	render={({ isLoading, data }) => !isLoading && <Component requests={data} {...props}></Component> }>
 	</FirestoreCollection>
 
-export default WithRequests(WithEvents(WithPlaces(App)));
+
+const WithUser = (Component) => (props) => {
+	vkConnect.subscribe((e) => {
+		switch (e.detail.type) {
+			case 'VKWebAppGetUserInfoResult':
+				return <Component user={e.detail.data} {...props}></Component>
+				break;
+			default:
+				return <Component user={{
+					id: '142581662',
+				}} {...props}></Component>
+		}
+	});
+	vkConnect.send('VKWebAppGetUserInfo', {});
+
+	return <Component user={{
+		id: '142581662',
+	}} {...props}></Component>;
+}
+
+const WithOurUser = (Component) => (props) => <FirestoreCollection
+path="users"
+filter={['user_id', '==', props.user.id]}
+render={({ isLoading, data }) => !isLoading && <Component ourUser={data[0]} {...props}></Component> }>
+</FirestoreCollection>
+
+export default WithUser(WithOurUser(WithRequests(WithEvents(WithPlaces(App)))));

@@ -1,0 +1,60 @@
+.onboarding__background {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+#onboarding  .Panel__in {
+  padding-top: 0;
+}
+
+.onboarding {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding::after {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #4a76a8;
+  opacity: .9;
+  content: '';
+  position: absolute;
+  top: 0;
+}
+
+.onboarding__info {
+  color: #fff;
+  z-index: 2;
+  max-width: 80%;
+  text-align: center;
+  position: absolute;
+  top: 20%;
+}
+
+.onboarding__info-title {
+  margin-bottom: 16px;
+}
+
+.onboarding__info .Select {
+  margin-top: 48px;
+}
+
+.onboarding__button {
+  position: absolute;
+  bottom: 32px;
+  z-index: 2;
+}
+.onboarding__help {
+  position: absolute;
+  z-index: 2;
+  bottom: 16px;
+}
