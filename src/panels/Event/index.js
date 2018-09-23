@@ -12,19 +12,27 @@ import Icon24UserAdded from '@vkontakte/icons/dist/24/user_added';
 import AppHeader from '../../components/AppHeader';
 
 import './index.css';
+import firebase from '../../firebase'
+var storage = firebase.storage();
 
 export default class Event extends React.Component {
   constructor(props) {
     super(props);
 
-    props.event.place.logo.get().then(r => console.log(r.data()));
+    this.state = { image: '' }
+    if (this.props.event.place.logo.path) {
+      storage.ref(this.props.event.place.logo.path).getDownloadURL().then((u) => {
+        this.setState({ image: u });
+      })
+    }
   }
   render() {
+    console.log(storage.ref(this.props.event.place.logo.path).getDownloadURL().then((url)=> url))
     return (<Panel className="event-detail" id={this.props.id}>
 		<AppHeader showBack id={this.props.id} go={this.props.go}></AppHeader>
     <div className="event-detail__image-container">
       <span className="event-detail__organizer-logo">
-        <img className="event-detail__organizer-logo-img" src={this.props.event.place.logo.get()}></img>
+        <img className="event-detail__organizer-logo-img" src={this.state.image}></img>
       </span>
       <span className="event-detail__title">{this.props.event.name}</span>
       <img class="event-detail__image" src={this.props.event.photo}></img>
