@@ -43,6 +43,7 @@ export default class Event extends React.Component {
         <Cell before={<Icon24Place />}>
           <InfoRow title="Организатор">
           <a href="http://vk.com">Пушкинский музей</a>
+          <CellButton style={{ paddingLeft: 0}}>Подписаться на события от этого организатора</CellButton>
           </InfoRow>
         </Cell>
         <Cell before={<Icon24UserAdded />}>
@@ -61,7 +62,6 @@ export default class Event extends React.Component {
           </InfoRow>
         </Cell>
 
-        <CellButton>Подписаться на события от этого организатора</CellButton>
       </List>
   </Panel>)
   }

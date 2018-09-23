@@ -22,6 +22,9 @@ class App extends React.Component {
 					subject: 'Пушкинский музей',
 					date: Date.now(),
 					id: 1,
+					friends: [{
+						photo_100: 'https://pp.userapi.com/c850232/v850232599/21045/jEy0VUOmxv8.jpg?ava=1'
+					}]
 				},
 
 				{
@@ -38,6 +41,9 @@ class App extends React.Component {
 					subject: 'Пушкинский музей',
 					date: Date.now(),
 					id: 3,
+					friends: [{
+						photo_100: 'https://pp.userapi.com/c636616/v636616883/35008/04KD5JIHnoI.jpg?ava=1',
+					}]
 				},
 				{
 					type: 'Музей',

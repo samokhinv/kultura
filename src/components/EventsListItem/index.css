@@ -1,5 +1,5 @@
-.event-list-item {
-
+.event-list-item--has-friends {
+  padding-bottom: 0;
 }
 
 .event-list-item__content {
