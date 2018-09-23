@@ -23,7 +23,7 @@ class App extends React.Component {
 			const place = props.places.find((p) => {
 				return description.place_id === p.id
 			})
-			const visitors = props.requests.find(({ event_id }) => event_id === e.id);
+			const visitors = props.requests.filter(({ event_id }) => event_id === e.id);
 			const res = { ...description, ...e, date:  moment().to(e.time), place, visitors };
 			return res;
 			} else {
@@ -33,7 +33,9 @@ class App extends React.Component {
 
 		this.state = {
 			activePanel: 'events',
-			fetchedUser: null,
+			fetchedUser: {
+				id: '142581662',
+			},
 			events,
 		};
 	}
@@ -61,9 +63,9 @@ class App extends React.Component {
 
 	getScreens = () => {
 		return [
-			<Home id="events" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
+			<Home id="events" user={this.state.fetchedUser} events={this.state.events} go={this.go} />,
 			...this.state.events.map((e, i) => (
-				<Event key={e.id} id={`events/${e.id}`} event={e} go={this.go}></Event>
+				<Event key={e.id} user={this.state.fetchedUser} id={`events/${e.id}`} event={e} go={this.go}></Event>
 			)),
 		]
 	}

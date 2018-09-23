@@ -21,28 +21,41 @@ class Event extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { image: '', loading: false }
+    
     if (this.props.event.place.logo && this.props.event.place.logo.path) {
       storage.ref(this.props.event.place.logo.path).getDownloadURL().then((u) => {
         this.setState({ image: u });
       })
     }
+
+    const enrollment = this.props.event.visitors.find(({ user_id }) => user_id === this.props.user.id);
+    const isEnrolled = enrollment != null;
+    this.state = { image: '', loading: false, enrollment, isEnrolled }
   }
 
   enroll() {
     this.setState({ loading: true });
     this.props.firestore.collection('requests').add({
       event_id: this.props.event.id,
-      user_id: 'id142581662',
-    }).then(() => {
-      this.setState({ loading: false });
+      user_id: this.props.user.id,
+    })
+    .then(res => res.get())
+    .then((res) => {
+      this.setState({ loading: false, enrollment: { ...res.data(), id: res.id }, isEnrolled: true, });
+    })
+  }
+
+  unenroll() {
+    this.setState({ loading: true });
+    this.props.firestore.collection('requests').doc(this.state.enrollment.id).delete().then(() => {
+      this.setState({ loading: false, enrollment: null, isEnrolled: false, });
     })
   }
 
   subscribeToPlace() {
     this.props.firestore.collection('places_subscribers').add({
       place_id: this.props.event.place.id,
-      user_id: 'id142581662',
+      user_id: this.props.user.id,
     });
   }
 
@@ -57,7 +70,21 @@ class Event extends React.Component {
       <img class="event-detail__image" src={this.props.event.photo}></img>
     </div>
     <Div style={{ background: '#fff' }}>
-       <Button onClick={this.enroll.bind(this)} size="xl" level="primary">{
+      {
+       this.state.isEnrolled 
+       ? <Button onClick={this.unenroll.bind(this)} size="xl" level="secondary">{
+        this.state.loading 
+        ? <Loader 
+        type="ThreeDots"
+        color="#333"
+        height="20"	
+        width="80"
+        />   
+        : 'Отменить запись'
+        
+      }</Button>
+       
+       : <Button onClick={this.enroll.bind(this)} size="xl" level="primary">{
          this.state.loading 
          ? <Loader 
          type="ThreeDots"
@@ -68,9 +95,13 @@ class Event extends React.Component {
          : 'Записаться'
          
        }</Button>
+
+      }
     </Div>
 
       <List className="event-detail__info">
+        <CellButton onClick={this.subscribeToPlace.bind(this)}>Подписаться на события от этого организатора</CellButton>
+
         <Cell before={<Icon24Recent />}>
           <InfoRow title="Дата проведения">
             { this.props.event.date }
@@ -85,7 +116,6 @@ class Event extends React.Component {
         <Cell before={<Icon24Place />}>
           <InfoRow title="Организатор">
           <a href="http://vk.com">{ this.props.event.place.name }</a>
-          <CellButton onClick={this.subscribeToPlace.bind(this)} style={{ paddingLeft: 0}}>Подписаться на события от этого организатора</CellButton>
           </InfoRow>
         </Cell>
         <Cell before={<Icon24UserAdded />}>
