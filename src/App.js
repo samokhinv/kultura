@@ -4,17 +4,30 @@ import { View } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './app.css';
-
 import Home from './panels/Home';
 import Event from './panels/Event';
+import { Timestamp } from '@google-cloud/firestore';
 
+// var admin = require("firebase-admin");
+
+// var serviceAccount = require("./service_key.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cfapp-b16dd.firebaseio.com"
+// });
+
+// var db = admin.firestore();
+
+// var event_types = {1:'Театр', 2:'Выставка', 3:'Концерт'};
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-
+		//var events_by_data = db.collection("list_of_events").orderBy("time").limit(5).get();
 		this.state = {
-			activePanel: 'events',
+			activePanel: 'home',
 			fetchedUser: null,
+			
 			events: [
 				{
 					type: 'Музей',
@@ -63,11 +76,25 @@ class App extends React.Component {
 					id: 6,
 				},
 			],
+		// 	events: [],
+		// };
+		// var i = 1;
+		// events_by_data.then(function(querySnapshot){
+		// 	querySnapshot.forEach(function(doc){
+		// 		console.log(doc)
+		// 		var singleObj = {};
+		// 		var d = doc.data();
+		// 		var ev = db.collection('events').doc(d.type).data();
+		// 		singleObj.type = event_types[ev.type];
+		// 		singleObj.title = d.name;
+		// 		singleObj.date = d.time.toDate();
+		// 		singleObj.id = i++;
+		// 		this.state.events.push(singleObj);
+		// 	});
 		};
 	}
 
 	componentDidMount() {
-		console.log("FUCKED")
 		connect.subscribe((e) => {
 			switch (e.detail.type) {
 				case 'VKWebAppGetUserInfoResult':
@@ -81,18 +108,14 @@ class App extends React.Component {
 	}
 
 	go = (e) => {
-		if (typeof e == 'string') {
-			this.setState({ activePanel: e })
-		} else {
-			this.setState({ activePanel: e.currentTarget.dataset.to })
-		}
+		this.setState({ activePanel: e.currentTarget.dataset.to })
 	};
 
 	getScreens = () => {
 		return [
-			<Home id="events" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
+			<Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
 			...this.state.events.map((e, i) => (
-				<Event key={e.id} id={`events/${e.id}`} go={this.go} event={e}></Event>
+				<Event key={e.id} id={`event_${e.id}`} event={e}></Event>
 			)),
 		]
 	}
