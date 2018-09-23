@@ -6,7 +6,6 @@ import EventsList from '../components/EventsList';
 import CategoriesGallery from '../components/CategoriesGallery';
 import AppHeader from '../components/AppHeader';
 
-console.log(AppHeader);
 
 const Home = props => (
 	<Panel id={props.id}>

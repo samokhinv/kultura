@@ -5,3 +5,10 @@
 .View .PanelHeader {
   padding: 0;
 } */
+
+.PanelHeader--ios .PanelHeader__left,
+.PanelHeader--ios .PanelHeader__right,
+.PanelHeader--ios .PanelHeader__content {
+  min-height: 43px;
+}
+
