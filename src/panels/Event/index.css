@@ -21,6 +21,16 @@
 
 .event-detail__image-container {
   position: relative;
+  overflow: hidden;
+}
+
+.event-detail__image {
+  position: absolute;
+  z-index: 0;
+}
+
+.event-detail__title {
+  z-index: 1
 }
 
 .event-detail__organizer-logo {
@@ -28,6 +38,8 @@
   height: 64px;
   width: 64px;
   background: green;  
+  z-index: 1;
+  margin-right: 16px;
 }
 
 .event-detail__info .Cell__main {

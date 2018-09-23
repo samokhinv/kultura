@@ -21,12 +21,10 @@ class App extends React.Component {
 			const description = props.descriptions.find(({ id }) => e.event_id === id);
 			if (description) {
 			const place = props.places.find((p) => {
-				console.log(p);
 				// console.log(id, description.place_id);
 				return description.place_id === p.id
 			})
-			console.log(place, description.place_id);
-			const res = { ...e, ...description, date:  moment().to(e.time), place };
+			const res = { ...description, ...e, date:  moment().to(e.time), place };
 			return res;
 			} else {
 				return undefined;
@@ -34,7 +32,7 @@ class App extends React.Component {
 		}).filter(e => e != null);
 
 		this.state = {
-			activePanel: 'home',
+			activePanel: 'events',
 			fetchedUser: null,
 			events,
 		};
@@ -56,14 +54,18 @@ class App extends React.Component {
 	}
 
 	go = (e) => {
-		this.setState({ activePanel: e.currentTarget.dataset.to })
+		if (typeof e === 'string') {
+			this.setState({ activePanel: e })
+		} else {
+			this.setState({ activePanel: e.currentTarget.dataset.to })
+		}
 	};
 
 	getScreens = () => {
 		return [
-			<Home id="home" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
+			<Home id="events" fetchedUser={this.state.fetchedUser} events={this.state.events} go={this.go} />,
 			...this.state.events.map((e, i) => (
-				<Event key={e.id} id={`event_${e.id}`} event={e}></Event>
+				<Event key={e.id} id={`events/${e.id}`} event={e} go={this.go}></Event>
 			)),
 		]
 	}
@@ -79,7 +81,7 @@ class App extends React.Component {
 	}
 }
 
-const WithEvents = (Component) => (props) => <FirestoreCollection
+const WithEvents = (Component) => (props) => <div><FirestoreCollection
 path="list_of_events"
 sort=""
 render={({ isLoading: isLoadingEvents, data: events }) => (
@@ -91,7 +93,7 @@ render={({ isLoading: isLoadingEvents, data: events }) => (
 	</FirestoreCollection>
 )}
 >
-</FirestoreCollection>
+</FirestoreCollection></div>
 
 
 const WithPlaces = (Component) => (props) => <FirestoreCollection

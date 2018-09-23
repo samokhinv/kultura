@@ -16,13 +16,18 @@ import './index.css';
 export default class Event extends React.Component {
   constructor(props) {
     super(props);
+
+    props.event.place.logo.get().then(r => console.log(r.data()));
   }
   render() {
     return (<Panel className="event-detail" id={this.props.id}>
 		<AppHeader showBack id={this.props.id} go={this.props.go}></AppHeader>
     <div className="event-detail__image-container">
-      <span className="event-detail__organizer-logo"></span>
-      <span className="event-detail__title">{this.props.event.title}</span>
+      <span className="event-detail__organizer-logo">
+        <img className="event-detail__organizer-logo-img" src={this.props.event.place.logo.get()}></img>
+      </span>
+      <span className="event-detail__title">{this.props.event.name}</span>
+      <img class="event-detail__image" src={this.props.event.photo}></img>
     </div>
     <Div style={{ background: '#fff' }}>
        <Button size="xl" level="primary">Записаться</Button>
@@ -37,28 +42,28 @@ export default class Event extends React.Component {
 
         <Cell before={<Icon24MoneyCircle />}>
           <InfoRow title="Цена">
-            Бесплатно
+            { this.props.event.price } ₽
           </InfoRow>
         </Cell>
         <Cell before={<Icon24Place />}>
           <InfoRow title="Организатор">
-          <a href="http://vk.com">Пушкинский музей</a>
+          <a href="http://vk.com">{ this.props.event.place.name }</a>
           <CellButton style={{ paddingLeft: 0}}>Подписаться на события от этого организатора</CellButton>
           </InfoRow>
         </Cell>
         <Cell before={<Icon24UserAdded />}>
           <InfoRow title="Осталось мест">
-            10
+          { this.props.event.number_of_tickets }
           </InfoRow>
         </Cell>
         <Cell before={<Icon24Linked />}>
           <InfoRow title="Ссылка на событие">
-            <a href="http://vk.com">http://vk.com</a>
+            <a href={this.props.event.link}>{this.props.event.link}</a>
           </InfoRow>
         </Cell>
         <Cell before={<Icon28InfoOutline />}>
           <InfoRow title="Описание">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            { this.props.event.description }
           </InfoRow>
         </Cell>
 

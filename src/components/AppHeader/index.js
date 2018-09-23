@@ -6,6 +6,7 @@ import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 import './index.css';
 
 const goBack = (url, go) => {
+  console.log(url, go);
   const back = url.split('/')[0]
 
   go(back);
