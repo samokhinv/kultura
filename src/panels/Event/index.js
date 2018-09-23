@@ -11,6 +11,7 @@ import Icon24UserAdded from '@vkontakte/icons/dist/24/user_added';
 
 import AppHeader from '../../components/AppHeader';
 import { FirestoreCollection, withFirestore } from 'react-firestore';
+import Loader from 'react-loader-spinner'
 
 import './index.css';
 import firebase from '../../firebase'
@@ -18,18 +19,34 @@ var storage = firebase.storage();
 
 class Event extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props);
 
-    this.state = { image: '' }
-    if (this.props.event.place.logo.path) {
+    this.state = { image: '', loading: false }
+    if (this.props.event.place.logo && this.props.event.place.logo.path) {
       storage.ref(this.props.event.place.logo.path).getDownloadURL().then((u) => {
         this.setState({ image: u });
       })
     }
   }
+
+  enroll() {
+    this.setState({ loading: true });
+    this.props.firestore.collection('requests').add({
+      event_id: this.props.event.id,
+      user_id: 'id142581662',
+    }).then(() => {
+      this.setState({ loading: false });
+    })
+  }
+
+  subscribeToPlace() {
+    this.props.firestore.collection('places_subscribers').add({
+      place_id: this.props.event.place.id,
+      user_id: 'id142581662',
+    });
+  }
+
   render() {
-    console.log(storage.ref(this.props.event.place.logo.path).getDownloadURL().then((url)=> url))
     return (<Panel className="event-detail" id={this.props.id}>
 		<AppHeader showBack id={this.props.id} go={this.props.go}></AppHeader>
     <div className="event-detail__image-container">
@@ -40,7 +57,17 @@ class Event extends React.Component {
       <img class="event-detail__image" src={this.props.event.photo}></img>
     </div>
     <Div style={{ background: '#fff' }}>
-       <Button size="xl" level="primary">Записаться</Button>
+       <Button onClick={this.enroll.bind(this)} size="xl" level="primary">{
+         this.state.loading 
+         ? <Loader 
+         type="ThreeDots"
+         color="#fff"
+         height="20"	
+         width="80"
+         />   
+         : 'Записаться'
+         
+       }</Button>
     </Div>
 
       <List className="event-detail__info">
@@ -58,7 +85,7 @@ class Event extends React.Component {
         <Cell before={<Icon24Place />}>
           <InfoRow title="Организатор">
           <a href="http://vk.com">{ this.props.event.place.name }</a>
-          <CellButton style={{ paddingLeft: 0}}>Подписаться на события от этого организатора</CellButton>
+          <CellButton onClick={this.subscribeToPlace.bind(this)} style={{ paddingLeft: 0}}>Подписаться на события от этого организатора</CellButton>
           </InfoRow>
         </Cell>
         <Cell before={<Icon24UserAdded />}>
@@ -84,4 +111,4 @@ class Event extends React.Component {
 
 
 
-export default Event;
+export default withFirestore(Event);
