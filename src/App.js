@@ -21,10 +21,10 @@ class App extends React.Component {
 			const description = props.descriptions.find(({ id }) => e.event_id === id);
 			if (description) {
 			const place = props.places.find((p) => {
-				// console.log(id, description.place_id);
 				return description.place_id === p.id
 			})
-			const res = { ...description, ...e, date:  moment().to(e.time), place };
+			const visitors = props.requests.find(({ event_id }) => event_id === e.id);
+			const res = { ...description, ...e, date:  moment().to(e.time), place, visitors };
 			return res;
 			} else {
 				return undefined;
@@ -36,8 +36,6 @@ class App extends React.Component {
 			fetchedUser: null,
 			events,
 		};
-		
-		// };
 	}
 
 	componentDidMount() {
@@ -101,4 +99,10 @@ const WithPlaces = (Component) => (props) => <FirestoreCollection
 	render={({ isLoading, data }) => !isLoading && <Component places={data} {...props}></Component> }>
 	</FirestoreCollection>
 
-export default WithEvents(WithPlaces(App));
+
+const WithRequests = (Component) => (props) => <FirestoreCollection
+	path="requests"
+	render={({ isLoading, data }) => !isLoading && <Component requests={data} {...props}></Component> }>
+	</FirestoreCollection>
+
+export default WithRequests(WithEvents(WithPlaces(App)));

@@ -10,13 +10,15 @@ import Icon24MoneyCircle from '@vkontakte/icons/dist/24/money_circle';
 import Icon24UserAdded from '@vkontakte/icons/dist/24/user_added';
 
 import AppHeader from '../../components/AppHeader';
+import { FirestoreCollection, withFirestore } from 'react-firestore';
 
 import './index.css';
 import firebase from '../../firebase'
 var storage = firebase.storage();
 
-export default class Event extends React.Component {
+class Event extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props);
 
     this.state = { image: '' }
@@ -79,3 +81,7 @@ export default class Event extends React.Component {
   </Panel>)
   }
 }
+
+
+
+export default Event;
