@@ -7,11 +7,11 @@ import './app.css';
 import Home from './panels/Home';
 import Event from './panels/Event';
 
+import 'moment/locale/ru'
+import moment from 'moment';
 import { FirestoreCollection } from 'react-firestore';
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 
+moment.locale('ru');
 
 var event_types = {1:'Театр', 2:'Выставка', 3:'Концерт'};
 class App extends React.Component {
@@ -19,8 +19,19 @@ class App extends React.Component {
 		super(props);
 		const events = props.events.map((e) => {
 			const description = props.descriptions.find(({ id }) => e.event_id === id);
-			return { ...e, ...description };
-		})
+			if (description) {
+			const place = props.places.find((p) => {
+				console.log(p);
+				// console.log(id, description.place_id);
+				return description.place_id === p.id
+			})
+			console.log(place, description.place_id);
+			const res = { ...e, ...description, date:  moment().to(e.time), place };
+			return res;
+			} else {
+				return undefined;
+			}
+		}).filter(e => e != null);
 
 		this.state = {
 			activePanel: 'home',
@@ -68,14 +79,14 @@ class App extends React.Component {
 	}
 }
 
-const WithEvents = () => <FirestoreCollection
+const WithEvents = (Component) => (props) => <FirestoreCollection
 path="list_of_events"
 sort=""
 render={({ isLoading: isLoadingEvents, data: events }) => (
 	<FirestoreCollection
 		path="events"
 		sort=""
-		render={({ isLoading: isLoadingEventsDescriptions, data: descriptions })	=> (!isLoadingEvents && !isLoadingEventsDescriptions && <App { ...{ events, descriptions } }></App>)}
+		render={({ isLoading: isLoadingEventsDescriptions, data: descriptions })	=> (!isLoadingEvents && !isLoadingEventsDescriptions && <Component { ...{ events, descriptions, ...props } }></Component>)}
 	>
 	</FirestoreCollection>
 )}
@@ -83,4 +94,9 @@ render={({ isLoading: isLoadingEvents, data: events }) => (
 </FirestoreCollection>
 
 
-export default WithEvents;
+const WithPlaces = (Component) => (props) => <FirestoreCollection
+	path="places"
+	render={({ isLoading, data }) => !isLoading && <Component places={data} {...props}></Component> }>
+	</FirestoreCollection>
+
+export default WithEvents(WithPlaces(App));

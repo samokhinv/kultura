@@ -17,9 +17,9 @@ const EventsListItem = props => (
         <div className="col col-8 event-list-item__content">
           <span className="event-list-item__title">{ props.event.name }</span>
           <div className="event-list-item__info">
-            <div className="event-list-item__subject">{ props.event.subject }</div>
+            <div className="event-list-item__subject">{ props.event.place && props.event.place.name }</div>
             <span class="event-list-item__info-divider">·</span>
-            <div className="event-list-item__date">{ props.event.time.toString() }</div>
+            <div className="event-list-item__date">{ props.event.date }</div>
           </div>        
         </div>
       </div>
@@ -41,6 +41,7 @@ EventsListItem.propTypes = {
     type: PropTypes.string,
     date: PropTypes.any,
     subject: PropTypes.any,
+    place: PropTypes.object,
   }),
 };
 
