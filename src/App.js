@@ -42,7 +42,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		
+		vkConnect.send("VKWebAppAllowNotifications", {});
 	}
 
 	go = (e) => {
@@ -114,10 +114,9 @@ const WithUser = (Component) => (props) => {
 		}
 	});
 	vkConnect.send('VKWebAppGetUserInfo', {});
-
-	return <Component user={{
+	return process.env.NODE_ENV === 'development' ? <Component user={{
 		id: '142581662',
-	}} {...props}></Component>;
+	}} {...props}></Component> : <span />;
 }
 
 const WithOurUser = (Component) => (props) => <FirestoreCollection
