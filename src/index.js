@@ -19,4 +19,4 @@ ReactDOM.render(
   <FirestoreProvider firebase={firebase}>
     <App />
   </FirestoreProvider>, 
-document.getElementById('root'));
+document.getElementById('https://samokhinv.github.io/kultura'));
